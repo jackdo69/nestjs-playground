@@ -12,7 +12,22 @@ export class TasksService {
     return this.tasks;
   }
 
-  getTasksWithFilters(filterDto: GetTasksFilterDto): Task[] {}
+  getTasksWithFilters(filterDto: GetTasksFilterDto): Task[] {
+    const { status, search } = filterDto;
+    let results = this.tasks;
+    if (status) {
+      results = results.filter((item) => item.status === status);
+    }
+
+    if (search) {
+      results = results.filter(
+        (item) =>
+          item.title.includes(search) || item.description.includes(search),
+      );
+    }
+
+    return results;
+  }
 
   getTaskById(id: string): Task {
     return this.tasks.find((task) => task.id === id);
